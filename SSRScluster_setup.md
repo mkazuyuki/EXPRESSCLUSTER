@@ -99,13 +99,13 @@
 			- service_sql
 				- Target service:  SQL Server  
 				Start/Stop:  synchronous
-			- service_agent: MSSQL Server
+			- service_agent
 				- Target service:  SQL Server Agent  
 				Start/Stop:  synchronous
-			- service_report:
+			- service_report
 				- Target service: SQL Server Reporting Services  
 				Start/Stop:  synchronous
-			- script:
+			- script
 				- start.bat:  
 				Execute "rskermgmt -a" command to restore key.  
 				Refer the appendix sample script.  
