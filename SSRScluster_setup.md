@@ -1,11 +1,10 @@
-# How to setup MSSQL Server + SSRS Share Disk Cluster without Scale out deployment feature
+# How to setup MSSQL Server + SQL Server Reporting Service on Share Disk Cluster without Scale out deployment feature
 
 ## System environment
-```bat
-Windows Server 2016 Standard Edition
-Microsoft SQL Server 2016 Standard Edition
-EXPRESSCLUSTER X 3.3 for Windows (internal version: 11.34)
-```
+- Windows Server 2016 Standard Edition
+- Microsoft SQL Server 2016 Standard Edition
+- EXPRESSCLUSTER X 3.3 for Windows (internal version: 11.34)
+
 ## System setup
 1. Basic cluster setup
 	1. On Primary and Secondary servers  
@@ -16,8 +15,8 @@ EXPRESSCLUSTER X 3.3 for Windows (internal version: 11.34)
 			- Group:
 				- group  
 			- Resource:  
-				- fip  
-				sd  
+				- fip
+				- sd  
 		1. Start group on Primary server  
 1. MSSQL Server and SSRS installation
 	1. On Primary server
@@ -44,8 +43,8 @@ EXPRESSCLUSTER X 3.3 for Windows (internal version: 11.34)
 			- Database Engine Configuration:
 				- Add accounts which will be used from both Primary and Secondary server  
 					(e.g. domain user for Windows authentication or sa account for SQL authentication)
-				- Set [folder path which is on sd resource Data Partition] for Data Root Directory
-		1. Move group back to Secondary server
+				- Set \<folder path which is on sd resource Data Partition\> for Data Root Directory
+		1. Move group back to Primary server
 1. SSRS Setup
 	1. On Primary server
 		1. Start SQL Server service and Reporting Services service  
@@ -65,10 +64,10 @@ EXPRESSCLUSTER X 3.3 for Windows (internal version: 11.34)
 		1. Comfirm that you can connect to Report Server from a client
 			- http://\<fip\>/Reports  
 			http://10.4.3.160/ReportServer
-		1. Stop SQL Server service and Reporting Services service  
-		1. Move group to Secondary server  
+		1. Stop SQL Server service and Reporting Services service
+		1. Move group to Secondary server
 	1. On Secondary server
-		1. Start SQL Server service and Reporting Services service  
+		1. Start SQL Server service and Reporting Services service
 		1. Copy Reporting Service parameter in config file from Primary Server to Secondary server.  
 			- Config file path:  
 				- \<MSSQL Server installation path\>\MSRS13.MSSQLSERVER\Reporting Services\ReportServer
@@ -76,10 +75,10 @@ EXPRESSCLUSTER X 3.3 for Windows (internal version: 11.34)
 				- rsreportserver.config  
 			- Target parameter:  
 				- Installation ID
-		1. Start Reporting Service Configuration Manager and connect to the MSSQL Server instance  
-			- Service Account:  
+		1. Start Reporting Service Configuration Manager and connect to the MSSQL Server instance
+			- Service Account:
 				- Apply the default settings  
-			- Web Service URL:  
+			- Web Service URL:
 				- Apply the default settings
 			- Database:  
 				- Select "Choose an existing report server database"  
@@ -109,7 +108,7 @@ EXPRESSCLUSTER X 3.3 for Windows (internal version: 11.34)
 			- script:
 				- start.bat:  
 				Execute "rskermgmt -a" command to restore key.  
-				Refer the appendix ample script.  
+				Refer the appendix sample script.  
 				- stop.bat:  No need to set.
 				- Start/Stop:  synchronous
 		1. Change resource dependency as the below:  
@@ -131,3 +130,4 @@ if %ERRORLEVEL%=0 (
  exit 1  
 )  
 ```
+Tips: `Get-Credential` commandlet in PowerShell can be utilized to avoid password in the script file.
